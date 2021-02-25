@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+//Yarit Villalobos
 @RestController
 public class CovidAggregateController {
 	
@@ -32,6 +32,7 @@ public class CovidAggregateController {
     public ResponseEntity addTruePositiveResult(@RequestBody String p) {
     	JSONObject obj = new JSONObject(p);
    	 	Result jsonp = obj.getString("p");
+   	 	
         covidAggregateService.aggregateResult(jsonp, ResultType.TRUE_POSITIVE);
         
         return null;
