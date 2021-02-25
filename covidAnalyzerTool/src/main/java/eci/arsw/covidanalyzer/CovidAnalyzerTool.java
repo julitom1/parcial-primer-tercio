@@ -19,15 +19,17 @@ import java.util.stream.Stream;
 public class CovidAnalyzerTool {
 
     private ResultAnalyzer resultAnalyzer;
-    private TestReader testReader;
+    private static TestReader testReader;
     private int amountOfFilesTotal;
     private AtomicInteger amountOfFilesProcessed;
-    private int cantHilos=5;
+    private int cantHilos=10;
+    private List<Thread> nHilos;
 
     public CovidAnalyzerTool() {
         resultAnalyzer = new ResultAnalyzer();
         testReader = new TestReader();
         amountOfFilesProcessed = new AtomicInteger();
+        nHilos=new ArrayList<>();
     }
 
     public void processResultData() {
@@ -58,6 +60,7 @@ public class CovidAnalyzerTool {
             }
             amountOfFilesProcessed.incrementAndGet();
         }
+    	//System.out.println("final");
     }
     private List<File> getResultFileList() {
         List<File> csvFiles = new ArrayList<>();
@@ -86,6 +89,19 @@ public class CovidAnalyzerTool {
             String line = scanner.nextLine();
             if (line.contains("exit"))
                 break;
+            if(TestReader.getDetener()) {
+            	TestReader.setDetener(false);
+            	
+	            	
+	            	synchronized(testReader) {
+	            		testReader.notifyAll();
+	            		}
+	            
+            	
+
+            }else {
+            	TestReader.setDetener(true);
+            }
             String message = "Processed %d out of %d files.\nFound %d positive people:\n%s";
             Set<Result> positivePeople = covidAnalyzerTool.getPositivePeople();
             String affectedPeople = positivePeople.stream().map(Result::toString).reduce("", (s1, s2) -> s1 + "\n" + s2);
