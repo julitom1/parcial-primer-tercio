@@ -89,7 +89,7 @@ public class CovidAggregateController {
     @RequestMapping(value = "/covid/result/persona/{id}", method = RequestMethod.PUT)
     public ResponseEntity savePersonaWithMultipleTests(@PathVariable UUID id, @RequestBody ResultType tipo) {
         //TODO
-    	
+    	JSONObject O;
         covidAggregateService.upsertPersonWithMultipleTests(id,tipo);
         return null;
     }
