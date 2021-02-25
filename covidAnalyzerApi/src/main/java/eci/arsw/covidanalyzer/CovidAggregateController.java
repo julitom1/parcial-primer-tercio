@@ -27,10 +27,11 @@ public class CovidAggregateController {
 
     //TODO: Implemente todos los metodos POST que hacen falta.
 
-    @RequestMapping(value = "/covid/result/true-positive", method = RequestMethod.POST)
-    public ResponseEntity addTruePositiveResult(Result result) {
-        
-        covidAggregateService.aggregateResult(result, ResultType.TRUE_POSITIVE);
+    @RequestMapping(value = "/covid/{result}/true-positive", method = RequestMethod.POST)
+    public ResponseEntity addTruePositiveResult(@RequestBody String p) {
+    	JSONObject obj = new JSONObject(p);
+   	 	Result jsonp = obj.getString("p");
+        covidAggregateService.aggregateResult(jsonp, ResultType.TRUE_POSITIVE);
         
         return null;
     }
@@ -62,24 +63,30 @@ public class CovidAggregateController {
     	return ResponseEntity.ok("Hello World");
     }
     
-    @RequestMapping(value = "/covid/result/true-negative", method = RequestMethod.POST)
-    public ResponseEntity addTrueNegativeResult(Result result) {
+    @RequestMapping(value = "/covid/{result}/true-negative", method = RequestMethod.POST)
+    public ResponseEntity addTrueNegativeResult(@RequestBody String tn) {
         //TODO
-        covidAggregateService.aggregateResult(result, ResultType.TRUE_NEGATIVE);
+    	JSONObject obj = new JSONObject(ti);
+   	 	Result jsontn = obj.getString("tn");
+        covidAggregateService.aggregateResult(jsontn, ResultType.TRUE_NEGATIVE);
         return null;
     }
     
-    @RequestMapping(value = "/covid/result/false-positive", method = RequestMethod.POST)
-    public ResponseEntity addTrueFalsePositiveResult(Result result) {
+    @RequestMapping(value = "/covid/{result}/false-positive", method = RequestMethod.POST)
+    public ResponseEntity addTrueFalsePositiveResult(@RequestBody String fp) {
         //TODO
-        covidAggregateService.aggregateResult(result, ResultType.FALSE_POSITIVE);
+    	JSONObject obj = new JSONObject(ti);
+   	 	Result jsonfp = obj.getString("fp");
+        covidAggregateService.aggregateResult(jsonfp, ResultType.FALSE_POSITIVE);
         return null;
     }
     
-    @RequestMapping(value = "/covid/result/false-negative", method = RequestMethod.POST)
-    public ResponseEntity addTrueFalseNegativeResult(Result result) {
+    @RequestMapping(value = "/covid/{result}/false-negative", method = RequestMethod.POST)
+    public ResponseEntity addTrueFalseNegativeResult(@RequestBody String fn) {
         //TODO
-        covidAggregateService.aggregateResult(result, ResultType.FALSE_NEGATIVE);
+    	JSONObject obj = new JSONObject(ti);
+   	 	Result jsonfn = obj.getString("fn");
+        covidAggregateService.aggregateResult(jsonfn, ResultType.FALSE_NEGATIVE);
         return null;
     }
 
@@ -87,10 +94,12 @@ public class CovidAggregateController {
     //TODO: Implemente el método.
 
     @RequestMapping(value = "/covid/result/persona/{id}", method = RequestMethod.PUT)
-    public ResponseEntity savePersonaWithMultipleTests(@PathVariable UUID id, @RequestBody ResultType tipo) {
+    public ResponseEntity savePersonaWithMultipleTests(@PathVariable UUID id, @RequestBody String ti) {
         //TODO
-    	JSONObject O;
-        covidAggregateService.upsertPersonWithMultipleTests(id,tipo);
+    	 JSONObject obj = new JSONObject(ti);
+    	 ResultType jsonTipo = obj.getString("ti");
+    	
+        covidAggregateService.upsertPersonWithMultipleTests(id,jsonTipo);
         return null;
     }
     
