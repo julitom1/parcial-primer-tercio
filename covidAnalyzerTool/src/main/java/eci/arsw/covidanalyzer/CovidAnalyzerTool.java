@@ -22,7 +22,7 @@ public class CovidAnalyzerTool {
     private static TestReader testReader;
     private int amountOfFilesTotal;
     private AtomicInteger amountOfFilesProcessed;
-    private int cantHilos=10;
+    private int cantHilos=5;
     private List<Thread> nHilos;
 
     public CovidAnalyzerTool() {
