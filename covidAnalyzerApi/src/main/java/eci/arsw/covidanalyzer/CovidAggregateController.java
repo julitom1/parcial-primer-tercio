@@ -2,6 +2,7 @@ package eci.arsw.covidanalyzer;
 
 import eci.arsw.covidanalyzer.model.Result;
 import eci.arsw.covidanalyzer.model.ResultType;
+import eci.arsw.covidanalyzer.service.CovidAggregateService;
 import eci.arsw.covidanalyzer.service.ICovidAggregateService;
 
 import java.util.UUID;
@@ -19,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CovidAggregateController {
 	
-	//@Autowired
-    ICovidAggregateService covidAggregateService;
+	@Autowired
+    CovidAggregateService covidAggregateService;
     
     
     

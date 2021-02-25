@@ -8,6 +8,9 @@ import eci.arsw.covidanalyzer.service.ICovidAggregateService;
 
 
 public class Result {
+	
+	
+	
 
 
 }
