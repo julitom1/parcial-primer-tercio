@@ -18,7 +18,7 @@ import java.util.*;
 public class TestReader {
 
     public static final int THREAD_DELAY = 100;
-
+    private static boolean detener;
     public TestReader() {
 
     }
@@ -28,11 +28,23 @@ public class TestReader {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
         df.setTimeZone(tz);
-
+        //System.out.println(ResultFile.getName());
         int count = 0;
         try {
             CSVParser csvParser = CSVFormat.newFormat(',').parse(new InputStreamReader(new FileInputStream(ResultFile)));
             for (CSVRecord record : csvParser) {
+            	 //System.out.println("hola");
+            	while(detener) {
+            		synchronized(this) {
+            			try {
+							wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+            		}
+            	}
+
                 Result Result = new Result();
                 Result.setId(UUID.fromString(record.get(0)));
                 Result.setFirstName(record.get(1));
@@ -58,5 +70,10 @@ public class TestReader {
         }
         return Results;
     }
-
+    public static void setDetener(boolean det) {
+    	detener=det;
+    }
+public static boolean getDetener() {
+    	return detener; 
+    }
 }

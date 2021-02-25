@@ -22,6 +22,7 @@ public class CovidAnalyzerTool {
     private TestReader testReader;
     private int amountOfFilesTotal;
     private AtomicInteger amountOfFilesProcessed;
+    private int cantHilos=5;
 
     public CovidAnalyzerTool() {
         resultAnalyzer = new ResultAnalyzer();
@@ -33,7 +34,24 @@ public class CovidAnalyzerTool {
         amountOfFilesProcessed.set(0);
         List<File> resultFiles = getResultFileList();
         amountOfFilesTotal = resultFiles.size();
-        for (File resultFile : resultFiles) {
+        
+        for(int i=0;i<cantHilos;i++) {
+        	
+        	List<File> resultFil = new ArrayList<>();
+        	int j=i;
+        	while(j<amountOfFilesTotal){
+        		resultFil.add(resultFiles.get(j));
+        		j+=cantHilos;
+        		
+        	}
+        	Thread processingThread1 = new Thread(() -> read(resultFil));
+        	processingThread1.start();
+        }
+        
+        
+    }
+    private void read(List<File> resultFiles) {
+    	for (File resultFile : resultFiles) {
             List<Result> results = testReader.readResultsFromFile(resultFile);
             for (Result result : results) {
                 resultAnalyzer.addResult(result);
@@ -41,7 +59,6 @@ public class CovidAnalyzerTool {
             amountOfFilesProcessed.incrementAndGet();
         }
     }
-
     private List<File> getResultFileList() {
         List<File> csvFiles = new ArrayList<>();
         try (Stream<Path> csvFilePaths = Files.walk(Paths.get("src/main/resources/")).filter(path -> path.getFileName().toString().endsWith(".csv"))) {
